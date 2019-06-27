@@ -13,7 +13,6 @@ import asyncio
 
 from quant.utils import tools
 from quant.utils import logger
-from quant.const import DERIBIT
 from quant.event import EventAsset
 from quant.tasks import LoopRunTask
 from quant.utils.websocket import Websocket
@@ -24,19 +23,15 @@ class DeribitAsset(Websocket):
     """ 账户资产
     """
 
-    def __init__(self, account, access_key, secret_key, wss=None):
+    def __init__(self, **kwargs):
         """ 初始化
-        @param wss websocket连接地址
-        @param account 资产账户
-        @param access_key 请求的access_key
-        @param secret_key 请求的secret_key
         """
-        self._platform = DERIBIT
-        self._wss = wss or "wss://deribit.com"
-        self._account = account
-        self._access_key = access_key
-        self._secret_key = secret_key
-        self._update_interval = 10  # 更新时间间隔(秒)
+        self._platform = kwargs["platform"]
+        self._wss = kwargs.get("wss", "wss://deribit.com")
+        self._account = kwargs["account"]
+        self._access_key = kwargs["access_key"]
+        self._secret_key = kwargs["secret_key"]
+        self._update_interval = kwargs.get("update_interval", 10)  # 更新时间间隔(秒)，默认10秒
 
         self._assets = {"BTC": {}, "ETH": {}}  # 所有资金详情
         self._last_assets = {}  # 上次推送的资产信息

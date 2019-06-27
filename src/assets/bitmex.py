@@ -7,7 +7,6 @@ Author: HuangTao
 Date:   2019/01/20
 """
 
-from quant.const import BITMEX
 from quant.utils import tools
 from quant.utils import logger
 from quant.event import EventAsset
@@ -17,30 +16,17 @@ from quant.platform.bitmex import BitmexAPI
 
 class BitmexAsset:
     """ 账户资金
-    self._assets
-    {
-        "BTC": {
-            "free": 11.11,
-            "locked": 22.22,
-            "total": 33.33
-        },
-        ...
-    }
     """
 
-    def __init__(self, account, access_key, secret_key, host=None):
+    def __init__(self, **kwargs):
         """ 初始化
-        @param host 请求的host
-        @param account 资产账户
-        @param access_key 请求的access_key
-        @param secret_key 请求的secret_key
         """
-        self._platform = BITMEX
-        self._host = host or "https://www.bitmex.com"
-        self._account = account
-        self._access_key = access_key
-        self._secret_key = secret_key
-        self._update_interval = 5  # 更新时间间隔(秒)
+        self._platform = kwargs["platform"]
+        self._host = kwargs.get("host", "https://www.bitmex.com")
+        self._account = kwargs["account"]
+        self._access_key = kwargs["access_key"]
+        self._secret_key = kwargs["secret_key"]
+        self._update_interval = kwargs.get("update_interval", 10)  # 更新时间间隔(秒)，默认10秒
 
         self._assets = {}  # 所有资金详情
 

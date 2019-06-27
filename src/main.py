@@ -6,6 +6,16 @@
 NOTE:
     1. 默认每隔10秒钟获取一次账户资产信息；
     2. 将最新的资产信息通过EventAsset事件推送至事件中心；
+    3. 资产数据结构
+        assets
+        {
+            "BTC": {
+                "free": 11.11,  # 可用资金
+                "locked": 22.22,  # 冻结资金
+                "total": 33.33  # 总资金
+            },
+            ...
+        }
 
 Author: HuangTao
 Date:   2018/09/20
@@ -14,7 +24,7 @@ Date:   2018/09/20
 import sys
 
 from quant.quant import quant
-from quant.const import OKEX, OKEX_FUTURE, BINANCE, HUOBI, DERIBIT, BITMEX
+from quant.const import OKEX, OKEX_FUTURE, BINANCE, HUOBI, DERIBIT, BITMEX, COINSUPER
 
 
 def initialize():
@@ -37,9 +47,12 @@ def initialize():
                 from assets.deribit import DeribitAsset as AssetServer
             elif platform == BITMEX:
                 from assets.bitmex import BitmexAsset as AssetServer
+            elif platform == COINSUPER:
+                from assets.coinsuper import CoinsuperAsset as AssetServer
             else:
                 logger.error("platform error! platform:", platform)
                 continue
+            item["platform"] = platform
             AssetServer(**item)
 
 
