@@ -1,52 +1,59 @@
 
 ## 资产服务
+资产服务根据各个交易所当前提供的不同方式，通过REST API或Websocket方式实现了对各大交易所平台账户资产的的获取及推送。
 
-资产服务器主要实现了资产数据的获取和资产事件的发布功能。
-资产服务器将根据各大交易所提供的REST API等方式，大约每隔10秒钟，从交易所获取一次资产详情，然后将资产数据经过打包处理，通过资产事件的方式发布至事件中心。
+> 资产事件默认 `10秒` 推送一次，可以在配置通过设置 `update_interval` 来指定资产事件更新推送时间间隔。
 
 
-#### 1. 准备工作
-
-- 使用 `pip` 安装 `thenextquant`:
+#### 安装
+需要安装 `thenextquant` 量化交易框架，使用 `pip` 可以简单方便安装:
 ```text
 pip install thenextquant
 ```
 
-- 下载项目 & 修改配置文件
+#### 运行
 ```text
 git clone https://github.com/TheNextQuant/Asset.git  # 下载项目
 cd Asset  # 进入项目目录
 vim config.json  # 编辑配置文件
-```
-> 可以参考[配置示例](config.json)，配置文件详解请参考 [配置文件说明](https://github.com/TheNextQuant/thenextquant/blob/master/docs/configure/README.md)。
 
-#### 2. 运行
-
-```text
 python src/main.py config.json  # 启动之前请修改配置文件
 ```
 
-#### 3. 各大交易所资产服务配置
-
-将需要获取资产的账户，写入配置文件的 `PLATFORMS` 项目下，其中 `key` 为交易平台名称小写字母，可以通过 `from quant import const` 下各个交易所名称来确定。
-注意，`assets` 为数组，可以同事配置多个账户。
-
-- OKEx
-
-OKEx的配置需要注意 `passphrase` 参数不要遗漏。
+- 配置示例
 ```json
 {
+    "RABBITMQ": {
+        "host": "127.0.0.1",
+        "port": 5672,
+        "username": "test",
+        "password": "123456"
+    },
+    "PROXY": "http://127.0.0.1:1087",
+
     "PLATFORMS": {
-        "okex": {
+        "binance": {
             "assets": [
                 {
                     "account": "test@gmail.com",
                     "access_key": "abc123",
-                    "secret_key": "ABC123",
-                    "passphrase": "test123456"
+                    "secret_key": "abc123"
                 }
             ]
         }
     }
 }
 ```
+> 以上配置表示：增加 `binance` 平台的账户 `test@gmail.com` 到资产服务器。 
+
+> 配置请参考 [配置文件说明](https://github.com/TheNextQuant/thenextquant/blob/master/docs/configure/README.md)。
+
+
+#### 各大交易所行情
+
+- [Binance(币安) 现货](docs/binance.md)
+- [OKEx 现货](docs/okex.md)
+- [OKEx Future 交割合约](docs/okex_future.md)
+- [Bitmex 合约](docs/bitmex.md)
+- [Huobi(火币) 现货](docs/huobi.md)
+- [Coinsuper(币成) 现货](docs/coinsuper.md)
