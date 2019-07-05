@@ -54,6 +54,8 @@ python src/main.py config.json  # 启动之前请修改配置文件
 - [Binance(币安) 现货](docs/binance.md)
 - [OKEx 现货](docs/okex.md)
 - [OKEx Future 交割合约](docs/okex_future.md)
+- [OKEx Swap 永续合约](docs/okex_swap.md)
 - [Bitmex 合约](docs/bitmex.md)
+- [Deribit 合约](docs/deribit.md)
 - [Huobi(火币) 现货](docs/huobi.md)
 - [Coinsuper(币成) 现货](docs/coinsuper.md)

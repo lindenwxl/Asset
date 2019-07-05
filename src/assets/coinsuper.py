@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
 
 """
-Coinsuper 账户资金
+Coinsuper Asset Server.
 
 Author: HuangTao
-Date:   2018/09/20
+Date:   2018/09/12
+Email:  huangtao@ifclover.com
 """
 
 from quant.utils import tools
@@ -15,35 +16,41 @@ from quant.platform.coinsuper import CoinsuperRestAPI
 
 
 class CoinsuperAsset:
-    """ 账户资金
+    """ Coinsuper Asset Server.
+
+    Attributes:
+        kwargs:
+            platform: Exchange platform name, must be `coinsuper`.
+            host: Exchange HTTP host address, default is "https://api.coinsuper.com"
+            account: Account name. e.g. test@gmail.com.
+            access_key: Account's ACCESS KEY.
+            secret_key: Account's SECRETE KEY.
+            update_interval: Interval time(second) for fetching asset information via HTTP, default is 10s.
     """
 
     def __init__(self, **kwargs):
-        """ 初始化
-        """
+        """Initialize object."""
         self._platform = kwargs["platform"]
         self._host = kwargs.get("host", "https://api.coinsuper.com")
         self._account = kwargs["account"]
         self._access_key = kwargs["access_key"]
         self._secret_key = kwargs["secret_key"]
-        self._update_interval = kwargs.get("update_interval", 10)  # 更新时间间隔(秒)，默认10秒
+        self._update_interval = kwargs.get("update_interval", 10)
 
-        self._assets = {}  # 所有资金详情
+        self._assets = {}  # All currencies
 
-        # 创建rest api请求对象
+        # Create a REST API client.
         self._rest_api = CoinsuperRestAPI(self._host, self._access_key, self._secret_key)
 
-        # 注册心跳定时任务
+        # Register a loop run task to fetching asset information.
         LoopRunTask.register(self.check_asset_update, self._update_interval)
 
     async def check_asset_update(self, *args, **kwargs):
-        """ 检查账户资金是否更新
-        """
+        """Fetch asset information."""
         result, error = await self._rest_api.get_user_account()
         if error:
             return
 
-        # 更新资金信息
         assets = {}
         for name, value in result["asset"].items():
             free = float(value.get("available"))
@@ -63,7 +70,7 @@ class CoinsuperAsset:
             update = True
         self._assets = assets
 
-        # 推送当前资产
+        # Publish AssetEvent.
         timestamp = tools.get_cur_timestamp_ms()
         EventAsset(self._platform, self._account, self._assets, timestamp, update).publish()
         logger.info("platform:", self._platform, "account:", self._account, "asset:", self._assets, caller=self)

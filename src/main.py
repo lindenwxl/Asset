@@ -1,35 +1,35 @@
 # -*- coding:utf-8 -*-
 
 """
-资产更新服务器
+Asset Server.
 
 NOTE:
-    1. 默认每隔10秒钟获取一次账户资产信息；
-    2. 将最新的资产信息通过EventAsset事件推送至事件中心；
-    3. 资产数据结构
+    1. Asset information will be updated every 10 seconds;
+    2. The newest asset information will be published to EventCenter via AssetEvent.
+    3. The following is the asset data struct:
         assets
         {
             "BTC": {
-                "free": 11.11,  # 可用资金
-                "locked": 22.22,  # 冻结资金
-                "total": 33.33  # 总资金
+                "free": 11.11,  # free currency for BTC.
+                "locked": 22.22,  # locked currency for BTC.
+                "total": 33.33  # total currency for BTC.
             },
             ...
         }
 
 Author: HuangTao
 Date:   2018/09/20
+Email:  huangtao@ifclover.com
 """
 
 import sys
 
 from quant.quant import quant
-from quant.const import OKEX, OKEX_FUTURE, BINANCE, HUOBI, DERIBIT, BITMEX, COINSUPER
+from quant.const import OKEX, OKEX_FUTURE, OKEX_SWAP, BINANCE, HUOBI, DERIBIT, BITMEX, COINSUPER
 
 
 def initialize():
-    """ 初始化
-    """
+    """ initialize project."""
     from quant.utils import logger
     from quant.config import config
 
@@ -37,12 +37,14 @@ def initialize():
         for item in info["assets"]:
             if platform == OKEX:
                 from assets.okex import OKExAsset as AssetServer
+            if platform == OKEX_SWAP:
+                from assets.okex_swap import OKExSwapAsset as AssetServer
+            elif platform == OKEX_FUTURE:
+                from assets.okex_future import OKExFutureAsset as AssetServer
             elif platform == BINANCE:
                 from assets.binance import BinanceAsset as AssetServer
             elif platform == HUOBI:
                 from assets.huobi import HuobiAsset as AssetServer
-            elif platform == OKEX_FUTURE:
-                from assets.okex_future import OKExFutureAsset as AssetServer
             elif platform == DERIBIT:
                 from assets.deribit import DeribitAsset as AssetServer
             elif platform == BITMEX:
@@ -57,7 +59,7 @@ def initialize():
 
 
 def main():
-    config_file = sys.argv[1]  # 配置文件 config.json
+    config_file = sys.argv[1]  # config file, e.g. config.json.
     quant.initialize(config_file)
     initialize()
     quant.start()

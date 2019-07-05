@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 
 """
-Deribit 账户资产
-https://docs.deribit.com/v2/
+Deribit Asset Server.
 
 Author: HuangTao
 Date:   2019/04/20
+Email:  huangtao@ifclover.com
 """
 
 import json
@@ -20,47 +20,57 @@ from quant.utils.decorator import async_method_locker
 
 
 class DeribitAsset(Websocket):
-    """ 账户资产
+    """ Deribit Asset Server.
+
+    Attributes:
+        kwargs:
+            platform: Exchange platform name, must be `deribit`.
+            wss: Exchange Websocket host address, default is "wss://deribit.com".
+            account: Account name. e.g. test@gmail.com.
+            access_key: Account's ACCESS KEY.
+            secret_key: Account's SECRETE KEY.
+            update_interval: Interval time(second) for fetching asset information via Websocket, default is 10s.
     """
 
     def __init__(self, **kwargs):
-        """ 初始化
-        """
+        """Initialize object."""
         self._platform = kwargs["platform"]
         self._wss = kwargs.get("wss", "wss://deribit.com")
         self._account = kwargs["account"]
         self._access_key = kwargs["access_key"]
         self._secret_key = kwargs["secret_key"]
-        self._update_interval = kwargs.get("update_interval", 10)  # 更新时间间隔(秒)，默认10秒
+        self._update_interval = kwargs.get("update_interval", 10)
 
-        self._assets = {"BTC": {}, "ETH": {}}  # 所有资金详情
-        self._last_assets = {}  # 上次推送的资产信息
+        self._assets = {"BTC": {}, "ETH": {}}  # All currencies
+        self._last_assets = {}  # last updated currencies information
 
         url = self._wss + "/ws/api/v2"
         super(DeribitAsset, self).__init__(url, send_hb_interval=5)
 
-        self._query_id = 0  # 消息序号id，用来唯一标识请求消息
-        self._queries = {}  # 未完成的post请求 {"request_id": future}
+        self._query_id = 0  # Unique query id for every query message.
+        self._queries = {}  # Uncompleted query message.
 
         self.initialize()
 
-        # 注册定时任务
-        LoopRunTask.register(self._do_auth, 60 * 60)  # 每隔1小时重新授权
-        LoopRunTask.register(self._publish_asset, self._update_interval)  # 推送资产
+        # Register a loop run task to re-authentication, per 1 hour.
+        LoopRunTask.register(self._do_auth, 60 * 60)
 
-        self._ok = False  # 是否建立授权成功的websocket连接
+        # Register a loop run task to fetching asset information.
+        LoopRunTask.register(self._publish_asset, self._update_interval)
+
+        self._ok = False  # If websocket connection authentication successful.
 
     async def connected_callback(self):
-        """ 建立连接之后，授权登陆，然后订阅order和position
+        """ After websocket connection created successfully, we will send a message to server for authentication.
         """
-        # 授权
+        # Authentication
         success, error = await self._do_auth()
         if error or not success.get("access_token"):
             logger.error("Websocket connection authorized failed:", error, caller=self)
             return
         self._ok = True
 
-        # 授权成功之后，订阅数据
+        # Subscribe asset
         method = "private/subscribe"
         params = {
             "channels": [
@@ -75,7 +85,7 @@ class DeribitAsset(Websocket):
             logger.info("subscribe asset success.",caller=self)
 
     async def _do_auth(self, *args, **kwargs):
-        """ 鉴权
+        """ Authentication
         """
         method = "public/auth"
         params = {
@@ -87,7 +97,15 @@ class DeribitAsset(Websocket):
         return success, error
 
     async def _send_message(self, method, params):
-        """ 发送消息
+        """ Send message.
+
+        Args:
+            method: message method.
+            params: message params.
+
+        Returns:
+            success: Success results, otherwise it's None.
+            error: Error information, otherwise it's None.
         """
         f = asyncio.futures.Future()
         request_id = await self._generate_query_id()
@@ -107,18 +125,24 @@ class DeribitAsset(Websocket):
 
     @async_method_locker("generate_query_id.locker")
     async def _generate_query_id(self):
-        """ 生成query id，加锁，确保每个请求id唯一
+        """ Generate a unique query id to distinguish query message.
+
+        Returns:
+            query_id: unique query id.
         """
         self._query_id += 1
         return self._query_id
 
     @async_method_locker("process.locker")
     async def process(self, msg):
-        """ 处理websocket消息
+        """ Process message that received from websocket connection.
+
+        Args:
+            msg: message that received from websocket connection.
         """
         logger.debug("msg:", json.dumps(msg), caller=self)
 
-        # 请求消息
+        # query message.
         request_id = msg.get("id")
         if request_id:
             f = self._queries.pop(request_id)
@@ -128,7 +152,7 @@ class DeribitAsset(Websocket):
             error = msg.get("error")
             f.set_result((success, error))
 
-        # 推送订阅消息
+        # subscribe message.
         if msg.get("method") != "subscription":
             return
         if msg["params"]["channel"] == "user.portfolio.btc":
@@ -148,8 +172,7 @@ class DeribitAsset(Websocket):
         }
 
     async def _publish_asset(self, *args, **kwargs):
-        """ 推送资产信息
-        """
+        """ Publish asset information."""
         if self._last_assets == self._assets:
             update = False
         else:
