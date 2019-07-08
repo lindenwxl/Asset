@@ -37,7 +37,7 @@ def initialize():
         for item in info["assets"]:
             if platform == OKEX:
                 from assets.okex import OKExAsset as AssetServer
-            if platform == OKEX_SWAP:
+            elif platform == OKEX_SWAP:
                 from assets.okex_swap import OKExSwapAsset as AssetServer
             elif platform == OKEX_FUTURE:
                 from assets.okex_future import OKExFutureAsset as AssetServer
