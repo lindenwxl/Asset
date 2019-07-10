@@ -2,6 +2,10 @@
 ## 资产服务
 资产服务根据各个交易所当前提供的不同方式，通过REST API或Websocket方式实现了对各大交易所平台账户资产的的获取及推送。
 
+
+![](docs/images/asset_framwork.png)
+
+
 > 资产事件默认 `10秒` 推送一次，可以在配置通过设置 `update_interval` 来指定资产事件更新推送时间间隔。
 
 
