@@ -25,7 +25,7 @@ Email:  huangtao@ifclover.com
 import sys
 
 from quant.quant import quant
-from quant.const import OKEX, OKEX_FUTURE, OKEX_SWAP, BINANCE, HUOBI, DERIBIT, BITMEX, COINSUPER
+from quant.const import OKEX, OKEX_FUTURE, OKEX_SWAP, BINANCE, HUOBI, DERIBIT, BITMEX, COINSUPER, KRAKEN
 
 
 def initialize():
@@ -51,6 +51,8 @@ def initialize():
                 from assets.bitmex import BitmexAsset as AssetServer
             elif platform == COINSUPER:
                 from assets.coinsuper import CoinsuperAsset as AssetServer
+            elif platform == KRAKEN:
+                from assets.kraken import KrakenAsset as AssetServer
             else:
                 logger.error("platform error! platform:", platform)
                 continue

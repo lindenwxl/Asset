@@ -1,8 +1,8 @@
 
-## Coinsuper(币成)资产
+## Kraken 资产
 
-Coinsuper的资产数据根据 [Coinsuper(币成)官方文档](https://www.coinsuper.com/api/docs/v1/api_zh.html) 提供的方式，
-通过REST API的方式，定时请求Coinsuper服务器相关账户的资产详情，然后资产服务器打包处理数据，通过资产事件的形式推送至事件中心。
+Kraken的资产数据根据 [Kraken官方文档](https://www.kraken.com) 提供的方式，
+通过REST API的方式，定时请求Kraken服务器相关账户的资产详情，然后资产服务器打包处理数据，通过资产事件的形式推送至事件中心。
 
 
 ##### 1. 服务配置
@@ -28,7 +28,7 @@ Coinsuper的资产数据根据 [Coinsuper(币成)官方文档](https://www.coins
     "PROXY": "http://127.0.0.1:1087",
 
     "PLATFORMS": {
-        "coinsuper": {
+        "kraken": {
             "assets": [
                 {
                     "account": "test@gmail.com",
@@ -41,11 +41,11 @@ Coinsuper的资产数据根据 [Coinsuper(币成)官方文档](https://www.coins
     }
 }
 ```
-> 以上配置表示：增加 `coinsuper` 平台的账户 `test@gmail.com` 到资产服务器。
+> 以上配置表示：增加 `kraken` 平台的账户 `test@gmail.com` 到资产服务器。
 
 > 配置文件可以参考 [配置文件说明](https://github.com/TheNextQuant/thenextquant/blob/master/docs/configure/README.md)。
 > 此处对 `PLATFORMS` 下的关键配置做一下说明:
-- coinsuper `dict` 交易平台
+- kraken `dict` 交易平台
     - assets `list` 需要配置的账户列表，可以配置多个账户
         - account `string` 账户名称
         - access_key `string` 账户对应的ACCESS KEY
