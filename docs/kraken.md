@@ -52,6 +52,10 @@ Kraken的资产数据根据 [Kraken官方文档](https://www.kraken.com) 提供�
         - secret_key `string` 账户对应的SECRET KEY
         - update_interval `int` 资产更新间隔时间 `可选，默认10秒`
 
+> 注意！  
+> Kraken的资产推送数据中，仅包含 `total` 总资产数据，`free` 和 `locked` 字段为0，因为Kraken官方接口文档未提供资产详细信息，
+> 无法计算剩余资产和冻结资产。
+
 
 > 其它：
 - [Asset 数据结构](https://github.com/TheNextQuant/thenextquant/blob/master/docs/asset.md#2-%E8%B5%84%E4%BA%A7%E5%AF%B9%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
