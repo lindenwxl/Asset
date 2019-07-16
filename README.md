@@ -64,3 +64,4 @@ python src/main.py config.json  # 启动之前请修改配置文件
 - [Huobi(火币) 币币](docs/huobi.md)
 - [Coinsuper(币成) 币币](docs/coinsuper.md)
 - [Kraken 币币/杠杆](docs/kraken.md)
+- [Gate.io 币币](docs/gate.md)
