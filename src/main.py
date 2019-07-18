@@ -24,8 +24,8 @@ Email:  huangtao@ifclover.com
 
 import sys
 
+from quant import const
 from quant.quant import quant
-from quant.const import OKEX, OKEX_FUTURE, OKEX_SWAP, BINANCE, HUOBI, DERIBIT, BITMEX, COINSUPER, KRAKEN, GATE
 
 
 def initialize():
@@ -35,25 +35,27 @@ def initialize():
 
     for platform, info in config.platforms.items():
         for item in info["assets"]:
-            if platform == OKEX:
+            if platform == const.OKEX:
                 from assets.okex import OKExAsset as AssetServer
-            elif platform == OKEX_SWAP:
+            elif platform == const.OKEX_SWAP:
                 from assets.okex_swap import OKExSwapAsset as AssetServer
-            elif platform == OKEX_FUTURE:
+            elif platform == const.OKEX_FUTURE:
                 from assets.okex_future import OKExFutureAsset as AssetServer
-            elif platform == BINANCE:
+            elif platform == const.BINANCE:
                 from assets.binance import BinanceAsset as AssetServer
-            elif platform == HUOBI:
+            elif platform == const.HUOBI:
                 from assets.huobi import HuobiAsset as AssetServer
-            elif platform == DERIBIT:
+            elif platform == const.DERIBIT:
                 from assets.deribit import DeribitAsset as AssetServer
-            elif platform == BITMEX:
+            elif platform == const.BITMEX:
                 from assets.bitmex import BitmexAsset as AssetServer
-            elif platform == COINSUPER:
+            elif platform == const.COINSUPER:
                 from assets.coinsuper import CoinsuperAsset as AssetServer
-            elif platform == KRAKEN:
+            elif platform == const.COINSUPER_PRE:
+                from assets.coinsuper_pre import CoinsuperPreAsset as AssetServer
+            elif platform == const.KRAKEN:
                 from assets.kraken import KrakenAsset as AssetServer
-            elif platform == GATE:
+            elif platform == const.GATE:
                 from assets.gate import GateAsset as AssetServer
             else:
                 logger.error("platform error! platform:", platform)
