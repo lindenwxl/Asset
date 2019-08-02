@@ -66,3 +66,4 @@ python src/main.py config.json  # 启动之前请修改配置文件
 - [Coinsuper Premium 币币](docs/coinsuper_pre.md)
 - [Kraken 币币/杠杆](docs/kraken.md)
 - [Gate.io 币币](docs/gate.md)
+- [Kucoin 币币](docs/kucoin.md)
