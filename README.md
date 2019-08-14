@@ -35,17 +35,14 @@ python src/main.py config.json  # 启动之前请修改配置文件
     },
     "PROXY": "http://127.0.0.1:1087",
 
-    "PLATFORMS": {
-        "binance": {
-            "assets": [
-                {
-                    "account": "test@gmail.com",
-                    "access_key": "abc123",
-                    "secret_key": "abc123"
-                }
-            ]
+    "ACCOUNTS": [
+        {
+            "platform": "binance",
+            "account": "test@gmail.com",
+            "access_key": "abc123",
+            "secret_key": "abc123"
         }
-    }
+    ]
 }
 ```
 > 以上配置表示：增加 `binance` 平台的账户 `test@gmail.com` 到资产服务器。 

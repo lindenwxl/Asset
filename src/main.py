@@ -33,37 +33,36 @@ def initialize():
     from quant.utils import logger
     from quant.config import config
 
-    for platform, info in config.platforms.items():
-        for item in info["assets"]:
-            if platform == const.OKEX:
-                from assets.okex import OKExAsset as AssetServer
-            elif platform == const.OKEX_SWAP:
-                from assets.okex_swap import OKExSwapAsset as AssetServer
-            elif platform == const.OKEX_FUTURE:
-                from assets.okex_future import OKExFutureAsset as AssetServer
-            elif platform == const.BINANCE:
-                from assets.binance import BinanceAsset as AssetServer
-            elif platform == const.HUOBI:
-                from assets.huobi import HuobiAsset as AssetServer
-            elif platform == const.DERIBIT:
-                from assets.deribit import DeribitAsset as AssetServer
-            elif platform == const.BITMEX:
-                from assets.bitmex import BitmexAsset as AssetServer
-            elif platform == const.COINSUPER:
-                from assets.coinsuper import CoinsuperAsset as AssetServer
-            elif platform == const.COINSUPER_PRE:
-                from assets.coinsuper_pre import CoinsuperPreAsset as AssetServer
-            elif platform == const.KRAKEN:
-                from assets.kraken import KrakenAsset as AssetServer
-            elif platform == const.GATE:
-                from assets.gate import GateAsset as AssetServer
-            elif platform == const.KUCOIN:
-                from assets.kucoin import KucoinAsset as AssetServer
-            else:
-                logger.error("platform error! platform:", platform)
-                continue
-            item["platform"] = platform
-            AssetServer(**item)
+    for item in config.accounts:
+        platform = item["platform"]
+        if platform == const.OKEX:
+            from assets.okex import OKExAsset as AssetServer
+        elif platform == const.OKEX_SWAP:
+            from assets.okex_swap import OKExSwapAsset as AssetServer
+        elif platform == const.OKEX_FUTURE:
+            from assets.okex_future import OKExFutureAsset as AssetServer
+        elif platform == const.BINANCE:
+            from assets.binance import BinanceAsset as AssetServer
+        elif platform == const.HUOBI:
+            from assets.huobi import HuobiAsset as AssetServer
+        elif platform == const.DERIBIT:
+            from assets.deribit import DeribitAsset as AssetServer
+        elif platform == const.BITMEX:
+            from assets.bitmex import BitmexAsset as AssetServer
+        elif platform == const.COINSUPER:
+            from assets.coinsuper import CoinsuperAsset as AssetServer
+        elif platform == const.COINSUPER_PRE:
+            from assets.coinsuper_pre import CoinsuperPreAsset as AssetServer
+        elif platform == const.KRAKEN:
+            from assets.kraken import KrakenAsset as AssetServer
+        elif platform == const.GATE:
+            from assets.gate import GateAsset as AssetServer
+        elif platform == const.KUCOIN:
+            from assets.kucoin import KucoinAsset as AssetServer
+        else:
+            logger.error("platform error! platform:", platform)
+            continue
+        AssetServer(**item)
 
 
 def main():

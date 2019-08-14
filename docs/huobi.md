@@ -27,30 +27,27 @@ Huobi(现货)的资产数据根据 [Huobi(现货)官方文档](https://huobiapi.
     },
     "PROXY": "http://127.0.0.1:1087",
 
-    "PLATFORMS": {
-        "huobi": {
-            "assets": [
-                {
-                    "account": "test@gmail.com",
-                    "access_key": "abc123",
-                    "secret_key": "abc123",
-                    "update_interval": 10
-                }
-            ]
+    "ACCOUNTS": [
+        {
+            "platform": "huobi",
+            "account": "test@gmail.com",
+            "access_key": "abc123",
+            "secret_key": "abc123",
+            "update_interval": 10
         }
-    }
+    ]
 }
 ```
 > 以上配置表示：增加 `huobi` 平台的账户 `test@gmail.com` 到资产服务器。
 
 > 配置文件可以参考 [配置文件说明](https://github.com/TheNextQuant/thenextquant/blob/master/docs/configure/README.md)。
-> 此处对 `PLATFORMS` 下的关键配置做一下说明:
-- huobi `dict` 交易平台
-    - assets `list` 需要配置的账户列表，可以配置多个账户
-        - account `string` 账户名称
-        - access_key `string` 账户对应的ACCESS KEY
-        - secret_key `string` 账户对应的SECRET KEY
-        - update_interval `int` 资产更新间隔时间 `可选，默认10秒`
+> 此处对 `ACCOUNTS` 下的关键配置做一下说明:
+- ACCOUNTS `list` 需要配置的账户列表，可以配置多个账户
+    - platform `string` 交易平台，恒为 `huobi`
+    - account `string` 账户名称
+    - access_key `string` 账户对应的ACCESS KEY
+    - secret_key `string` 账户对应的SECRET KEY
+    - update_interval `int` 资产更新间隔时间 `可选，默认10秒`
 
 
 > 其它：
