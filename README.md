@@ -50,7 +50,7 @@ python src/main.py config.json  # 启动之前请修改配置文件
 > 配置请参考 [配置文件说明](https://github.com/TheNextQuant/thenextquant/blob/master/docs/configure/README.md)。
 
 
-#### 各大交易所行情
+#### 各大交易所资产服务
 
 - [Binance 币币](docs/binance.md)
 - [OKEx 币币](docs/okex.md)
