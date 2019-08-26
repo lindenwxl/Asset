@@ -59,6 +59,7 @@ python src/main.py config.json  # 启动之前请修改配置文件
 - [Bitmex 合约](docs/bitmex.md)
 - [Deribit 合约](docs/deribit.md)
 - [Huobi 币币](docs/huobi.md)
+- [Huobi Future 合约](docs/huobi_future.md)
 - [Coinsuper 币币](docs/coinsuper.md)
 - [Coinsuper Premium 币币](docs/coinsuper_pre.md)
 - [Kraken 币币/杠杆](docs/kraken.md)
