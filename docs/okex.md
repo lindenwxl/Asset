@@ -29,7 +29,7 @@ OKEx(现货)的资产数据根据 [OKEx(现货)官方文档](https://www.okex.me
 
     "ACCOUNTS": [
         {
-            "platform": "kucoin",
+            "platform": "okex",
             "account": "test@gmail.com",
             "access_key": "abc123",
             "secret_key": "abc123",
