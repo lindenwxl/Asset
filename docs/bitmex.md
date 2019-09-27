@@ -1,7 +1,7 @@
 
 ## Bitmex资产
 
-Binance(币安)的资产数据根据 [Bitmex官方文档](https://www.bitmex.com/) 提供的方式，
+Bitmex的资产数据根据 [Bitmex官方文档](https://www.bitmex.com/) 提供的方式，
 通过REST API的方式，定时请求Bitmex服务器相关账户的资产详情，然后资产服务器打包处理数据，通过资产事件的形式推送至事件中心。
 
 
