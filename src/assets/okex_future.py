@@ -57,6 +57,8 @@ class OKExFutureAsset:
         assets = {}
         for name, item in result["info"].items():
             symbol = name.upper()
+            if symbol not in ["BTC", "ETH"]:
+                continue
             total = float(item["equity"])
             locked = float(item["margin"])
             if total > 0:
